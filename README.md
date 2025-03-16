@@ -73,33 +73,63 @@ yarn build
     get - для выполнения GET запросов,
     post - для выполнения POST запросов.
 
+## API
+
+- ProductApi - класс для получения спика Product, имплементирует интерфейс 
+IProductApi и наследует от Api.  
+Экземпляр класcа передается в конструктор ProductsModel.
+    - get products(): Promise<object>; // отправляет GET запрос на получение Product
+
+- OrderApi - класс для отправки Order, имплементирует интерфейс 
+IOrderApi и наследует от Api.  
+Экземпляр класса передается в конструктор OrderModel.
+    - submit(): Promise<object>;      // отправляет POST запрос с Order в теле запроса
 
 ## Компоненты модели данных
 
-- ProductsModel - класс модель для управлением товарами внутри каталога
+- ProductsModel - класс модель для управлением товарами внутри каталога,
+имплементирует интерфейс IProductsModel, наследует EventEmitter. 
+    - products: Product[] | null;      
+    - api: IProductsApi;
+    - setProducts(): void;            // async метод для получения списка Product[]
+    - getProduct(id: ID): Product;    // получения Product по id
 
-- BasketModel - класс модель для управления товарами внутри корзины
+- BasketModel - класс модель для управления товарами внутри корзины,
+имплементирует интерфейс IBasketModel, наследует EventEmitter
+    - products: ID[]; 
+    - cost: number;
+    - add(id: ID): void;              // добавление товара в корзину
+    - remove(id: ID): void;           // удаление товара из корзины
 
-- OrderModel - класс модель для управления данными внутри заказа
-
+- OrderModel - класс модель для управления данными внутри заказа,
+имплементирует интерфейс IOrderModel, наследует EventEmitter.
+    - order: Order | null;
+    - orderApi: IOrderApi;
+    - submit(): OrderResponse;        // async метод для отправки формы Order
+    - reset(): void;                  // сброс формы Order
 
 ## Компоненты представления
 
-- View - абстрактный класс представления
+- View - абстрактный класс представления имплементирует интерфейс IView
+    - element: HTMLElement | null;    // элемент представления
+    - get template(): string;         // возвращает разметку
+    - remove(): void;                 // удаление элемента
+    
+- ProductListView - класс представление каталога товаров наследует от View
 
-- ProductListView - класс представление каталога товаров
+- ProductView - класс представление карточки товара наследует от View
 
-- ProductView - класс представление карточки товара
+- ModalView - класс представление обертки модальных окон наследует от View. 
+В конструктор будет принимать экземпляр классов 
+(ProductView/BasketView/OrderPaymentView/OrderContactsView/OrderSuccessView).
 
-- ModalView - класс представление обертки модальных окон
+- BasketView - класс представление корзины товаров наследует от View
 
-- BasketView - класс представление корзины товаров
+- OrderPaymentView - класс представление оформления заказа (этап 1) наследует от View
 
-- OrderPaymentView - класс представление оформления заказа (этап 1)
+- OrderContactsView - класс представление оформление заказа (этап 2) наследует от View
 
-- OrderContactsView - класс представление оформление заказа (этап 2)
-
-- OrderSuccessView - класс представление успешно офрмленного заказа
+- OrderSuccessView - класс представление успешно офрмленного заказа наследует от View
 
 
 ## Ключевые типы данных
