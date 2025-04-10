@@ -81,12 +81,12 @@ yarn build
 - ProductApi - класс для получения спика Product, имплементирует интерфейс 
 IProductApi и наследует от Api.  
 Экземпляр класcа передается в конструктор ProductsModel.
-    - get products(): Promise<object>; // отправляет GET запрос на получение Product
+    - get products(): Promise<object>; // асинхронный метод, отправляет GET запрос на получение Product
 
 - OrderApi - класс для отправки Order, имплементирует интерфейс 
 IOrderApi и наследует от Api.  
 Экземпляр класса передается в конструктор OrderModel.
-    - submit(): Promise<object>;      // отправляет POST запрос с Order в теле запроса
+    - submit(): Promise<object>;      // асинхронный метод, отправляет POST запрос с Order в теле запроса
 
 ## Компоненты модели данных
 

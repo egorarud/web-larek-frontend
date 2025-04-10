@@ -1,7 +1,7 @@
-type ID = string;
+export type ID = string;
 
 // товар
-type Product = {
+export type Product = {
     id: ID;                 // уникальный идентефикатор товара
     title: string;          // название товара
     description: string;    // описание товара
@@ -11,13 +11,13 @@ type Product = {
 }
 
 // список товаров
-type ProductList = {
+export type ProductList = {
     total: number;             // количество товаров в списке
     items: Product[]           // товары
 }
 
 // заказ
-type Order = {
+export type Order = {
     payment: string;            // тип оплаты
     address: string;            // адрес доставки
     phone: string;              // номер телефона пользователя
@@ -27,42 +27,52 @@ type Order = {
 }
 
 // ответ на заказ
-type OrderResponse = {
+export type OrderResponse = {
     id: ID;                     // идентификатор заказа
     total: number;              // сумма заказ
 }
 
-interface IProductsModel {
+export interface IProductsModel {
     products: Product[] | null;      
     api: IProductsApi;
     setProducts(): void;            // async метод для получения списка Product[]
     getProduct(id: ID): Product;    // получения Product по id
 }
 
-interface IProductsApi {
-    get products(): Promise<object>; // отправляет GET запрос на получение Product
+export interface IProductsApi {
+    get products(): Promise<ProductList>; // async, отправляет GET запрос на получение Product
 }
 
-interface IBasketModel {
+export interface IBasketModel {
     products: ID[]; 
     cost: number;
     add(id: ID): void;              // добавление товара в корзину
     remove(id: ID): void;           // удаление товара из корзины
+    reset(): void;
 }
 
-interface IOrderModel {
+export interface IOrderModel {
     order: Order | null;
     orderApi: IOrderApi;
-    submit(): OrderResponse;        // async метод для отправки формы Order
+    submit(): Promise<OrderResponse>;        // async метод для отправки формы Order
     reset(): void;                  // сброс формы Order
 }
 
-interface IOrderApi {
-    submit(): Promise<object>;      // отправляет POST запрос с Order в теле запроса
+export interface IOrderApi {
+    submit(order: Order): Promise<OrderResponse>;      // async, отправляет POST запрос с Order в теле запроса
 }
 
-interface IView {
-    element: HTMLElement | null;    // элемент представления
-    get template(): string;         // возвращает разметку
+export interface IView {
+    element: Element | null;    // элемент представления
+    get layout(): string;         // возвращает разметку
     remove(): void;                 // удаление элемента
 }
+
+export const RenderPosition = {
+    BEFOREBEGIN: 'beforebegin',
+    AFTERBEGIN: 'afterbegin',
+    BEFOREEND: 'beforeend',
+    AFTEREND: 'afterend',
+}
+
+export type CallbackView = (elem: EventTarget) => void;  

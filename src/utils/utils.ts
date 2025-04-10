@@ -1,3 +1,5 @@
+import View from "../components/view/view";
+
 export function pascalToKebab(value: string): string {
     return value.replace(/([a-z0–9])([A-Z])/g, "$1-$2").toLowerCase();
 }
@@ -111,6 +113,7 @@ export function createElement<
     T extends HTMLElement
     >(
     tagName: keyof HTMLElementTagNameMap,
+    template: string,
     props?: Partial<Record<keyof T, string | boolean | object>>,
     children?: HTMLElement | HTMLElement []
 ): T {
@@ -131,5 +134,40 @@ export function createElement<
             element.append(child);
         }
     }
+
+    element.innerHTML = template;
     return element;
+}
+
+export function render(component: View , container: Element, place: InsertPosition = "beforeend") {
+    if (!(component instanceof View)) {
+      throw new Error('Can render only components');
+    }
+  
+    if (container === null) {
+      throw new Error('Container element doesn\'t exist');
+    }
+  
+    container.insertAdjacentElement(place, component.element);
+}
+
+export function replace(newComponent: View, oldComponent: View) {
+    if (!(newComponent instanceof View && oldComponent instanceof View)) {
+      throw new Error('Can replace only components');
+    }
+  
+    const newElement = newComponent.element;
+    const oldElement = oldComponent.element;
+  
+    const parent = oldElement.parentElement;
+  
+    if (parent === null) {
+      throw new Error('Parent element doesn\'t exist');
+    }
+  
+    parent.replaceChild(newElement, oldElement);
+}
+
+export function isInputValid(input: HTMLInputElement) {
+    return input.value.length !== 0;
 }
