@@ -12,9 +12,12 @@ function createBasketLayout() : string {
 }
 
 export default class BasketView extends View {
+    productContainer: Element = null;
 
     constructor() {
         super();
+
+        this.productContainer = this.element.querySelector('.basket__list')
     }
 
     get layout(): string {

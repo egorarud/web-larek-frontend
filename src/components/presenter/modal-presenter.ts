@@ -24,8 +24,7 @@ export default class ModalPresenter {
     }
 
     private onModalCloseClick = () => {
-        console.log('close');
-        this.modalWrapper.classList.remove('modal_active');
+        this.close();
     }
     
     open = (element: View) => {
@@ -36,5 +35,9 @@ export default class ModalPresenter {
         this.modalContent = element;
         render(this.modalContent, this.modalContentContainer);
         this.modalWrapper.classList.add('modal_active');
+    }
+
+    close = () => {
+        this.modalWrapper.classList.remove('modal_active');
     }
 }

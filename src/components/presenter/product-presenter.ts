@@ -37,7 +37,9 @@ export default class ProductPresenter {
                 this.inBasket = false;
                 this.renderButton();
             }
-        })
+        });
+
+        this.emitter.on('success', () => this.inBasket = false);
     }
 
     init() {

@@ -14,7 +14,6 @@ function createModalLayout() : string {
 }
 
 export default class ModalView extends View {
-    private content: Element = null;
     private onModalCloseClick: VoidFunction = null;
 
     constructor(onModalCloseClick: VoidFunction) {
@@ -23,6 +22,8 @@ export default class ModalView extends View {
 
         this.element.querySelector('.modal__close')
             .addEventListener('click', this.modalCloseClickHandler);
+
+        this.element.addEventListener('click', this.overlayClickHandler);
     }
 
     get layout() : string {
@@ -31,7 +32,13 @@ export default class ModalView extends View {
 
     private modalCloseClickHandler = (evt: Event) => {
         evt.preventDefault();
-        this.content = null;
         this.onModalCloseClick();
+    }
+
+    private overlayClickHandler = (evt: Event) => {
+        evt.preventDefault();
+        if (evt.target === this.element) {
+            this.onModalCloseClick();
+        }
     }
 }

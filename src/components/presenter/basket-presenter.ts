@@ -65,7 +65,7 @@ export default class BasketPresenter {
 
         this.modalPresenter.open(basketComponent);
         render(modalActionsComponent, basketComponent.element);
-        basketProduct.forEach((product, index) => render(new ProductBasketView(product, index + 1, this.deleteProductHandler), basketComponent.element.querySelector('.basket__list')));
+        basketProduct.forEach((product, index) => render(new ProductBasketView(product, index + 1, this.deleteProductHandler), basketComponent.productContainer));
     }
 
     private basketClickHandler = () => {
@@ -74,7 +74,6 @@ export default class BasketPresenter {
 
     private deleteProductHandler = (product: Product) => {
         this.basketModel.remove(product.id);
-        console.log('delete');
         this.renderBasketHeader();
         this.renderBasket();
         this.emitter.emit('productDelete', product);

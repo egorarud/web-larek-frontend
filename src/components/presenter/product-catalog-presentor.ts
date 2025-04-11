@@ -34,7 +34,6 @@ export default class ProductCatalogPresenter {
 
     private renderProducts() {
         const products = this.products;
-        console.log(products)
         for (const i in products) {
             const productPresenter = new ProductPresenter(products[i], this.productsContainer, this.modalPresenter, this.basketModel, this.emitter);
             productPresenter.init();

@@ -13,10 +13,12 @@ function createOrderLayout(name: OrderName) : string {
 
 export default class OrderView extends View {
     private name: OrderName = null;
+    contentContainer: Element = null;
 
     constructor(name: OrderName) {
         super();
         this.name = name;
+        this.contentContainer = this.element.querySelector('.order');
     }
 
     get layout() : string {

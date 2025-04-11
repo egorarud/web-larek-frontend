@@ -14,8 +14,8 @@ import ModalPresenter from "./modal-presenter";
 
 export default class OrderPresenter {
     private orderPaymentComponent: View = null;
-    private orderPaymentWrapperComponent: View = null;
-    private orderContactWrapperComponent: View = null;
+    private orderPaymentWrapperComponent: OrderView = null;
+    private orderContactWrapperComponent: OrderView = null;
     private orderPaymentFieldComponents: View[] = null;
     private orderContactFieldComponents: View[] = null;
     private modalActionsPayment: ModalActionsView = null;
@@ -79,7 +79,7 @@ export default class OrderPresenter {
 
     private renderPaymentOrder() {
         this.modalPresenter.open(this.orderPaymentWrapperComponent);
-        const container = this.orderPaymentWrapperComponent.element.querySelector('.order');
+        const container = this.orderPaymentWrapperComponent.contentContainer;
 
         render(this.orderPaymentComponent, container);
         this.orderPaymentFieldComponents.forEach(component => render(component, container));
@@ -96,7 +96,7 @@ export default class OrderPresenter {
 
     private renderContactOrder() {
         this.modalPresenter.open(this.orderContactWrapperComponent);
-        const container = this.orderContactWrapperComponent.element.querySelector('.order');
+        const container = this.orderContactWrapperComponent.contentContainer;
 
         this.orderContactFieldComponents.forEach(component => render(component, container));
 
@@ -154,16 +154,15 @@ export default class OrderPresenter {
 
     private submitOrder = () => {
         this.orderModel.order = {
-            payment: this.payment.getAttribute('value'),
-            address: this.adress.getAttribute('value'),
-            phone: this.phone.getAttribute('value'),
-            email: this.email.getAttribute('value'),
+            payment: this.payment.getAttribute('name'),
+            address: this.adress.value,
+            phone: this.phone.value,
+            email: this.email.value,
             total: this.basketModel.cost,
             items: this.basketModel.products
         };
 
-        console.log(this.orderModel.submit());
-        this.modalPresenter.open(new SuccessView(this.basketModel.cost));
+        this.modalPresenter.open(new SuccessView(this.basketModel.cost, () => this.modalPresenter.close()));
         this.basketModel.reset();
         this.emmiter.emit('success');
     }
